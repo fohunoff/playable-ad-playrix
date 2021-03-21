@@ -2,6 +2,8 @@
 
 _Тестовое задание для Playrix_
 
+[Демо](https://fohunoff.github.io/playable-ad-playrix/)
+
 Для установки зависимостей:
 
 ```
