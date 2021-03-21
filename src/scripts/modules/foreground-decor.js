@@ -1,7 +1,9 @@
 import * as PIXI from 'pixi.js';
 import { app } from '../../main.js';
-import { RES_PATH, FOREGROUND_PLANT_X, FOREGROUND_PLANT_Y } from '../constants/index.js';
 import { fadeOut, fallingDown } from '../services/animations.js';
+import { RES_PATH, FOREGROUND_PLANT_X, FOREGROUND_PLANT_Y } from '../constants/index.js';
+
+const TIMEOUT = 500;
 
 export const foregroundDecorInit = () => {
     const container = new PIXI.Container();
@@ -14,7 +16,7 @@ export const foregroundDecorInit = () => {
     setTimeout(() => {
         fadeOut(plantForeground);
         fallingDown(plantForeground, FOREGROUND_PLANT_Y);
-    }, 500);
+    }, TIMEOUT);
 
     container.addChild(plantForeground);
 }

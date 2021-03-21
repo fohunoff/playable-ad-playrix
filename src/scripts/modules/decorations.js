@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { app } from '../../main.js';
-import { RES_PATH } from '../constants/index.js';
 import { fadeOut, fallingDown } from '../services/animations.js';
+import { RES_PATH } from '../constants/index.js';
 
 const DECORS = {
     bookStand:  { x: 830,   y: -20, name: 'book-stand.png', },
@@ -12,11 +12,11 @@ const DECORS = {
     table:      { x: 200,   y: 200, name: 'table.png', },
 };
 
+let TIMEOUT = 300;
+
 export const decorationsInit = () => {
     const decorContainer = new PIXI.Container();
     app.stage.addChild(decorContainer);
-
-    let TIMEOUT = 300;
 
     // Сортируем по Y, чтобы не перекрывались предметы по экспозиции
     Object.values(DECORS).sort((a, b) => a.y - b.y).forEach((item) => {

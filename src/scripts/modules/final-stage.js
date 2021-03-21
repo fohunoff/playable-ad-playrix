@@ -1,10 +1,15 @@
 import * as PIXI from 'pixi.js';
 import { Graphics } from 'pixi.js';
-
 import { app } from '../../main.js';
-import { RES_PATH, APP_WIDTH, APP_HEIGHT } from '../constants/index.js';
-
 import { animationSwing, fadeOut } from '../services/animations.js';
+import {
+    RES_PATH,
+    APP_WIDTH,
+    APP_HEIGHT,
+    REDIRECT_URL,
+    BANNER_POSITION_Y,
+    CONTINUE_BUTTON_POSITION_Y,
+} from '../constants/index.js';
 
 let container;
 
@@ -26,7 +31,7 @@ export const finalStageInit = () => {
     const createBanner = () => {
         const banner = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/banner.png`));
         banner.x = APP_WIDTH / 2;
-        banner.y = 50;
+        banner.y = BANNER_POSITION_Y;
         banner.anchor.set(0.5, 0);
 
         container.addChild(banner);
@@ -35,14 +40,15 @@ export const finalStageInit = () => {
     const createContinueButton = () => {
         const continueButton = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/continue-button.png`));
         continueButton.x = APP_WIDTH / 2;
-        continueButton.y = 480;
+        continueButton.y = CONTINUE_BUTTON_POSITION_Y;
         continueButton.anchor.set(0.5, 0);
 
         continueButton.interactive = true;
         continueButton.buttonMode = true;
 
         continueButton.on('pointerdown', () => {
-            console.log('open game link');
+            const win = window.open(REDIRECT_URL, '_blank');
+            win.focus();
         });
 
         // Анимация "качения кнопки"

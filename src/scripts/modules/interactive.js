@@ -1,9 +1,11 @@
 import * as PIXI from 'pixi.js';
 import { app } from '../../main.js';
-import { RES_PATH, STAIRS_POSITION_Y } from '../constants/index.js';
+import { animationSwing, fadeOut } from '../services/animations.js';
 import { allStairs, oldStairs } from './stairs.js';
 import { getContainer } from './final-stage.js';
-import { animationSwing, fadeOut } from '../services/animations.js';
+import { createStairsButton, resetActive, setActive } from '../services/stairs-button.js';
+
+import { RES_PATH, STAIRS_POSITION_Y } from '../constants/index.js';
 
 const STAIRS_FALL_OFFSET = 30;
 
@@ -12,41 +14,16 @@ const BUTTON_OFFSET = 130;
 
 let buttonX = 830;
 let isStairsButtonInit = false;
+let timeoutDelay = 0;
 
 export const interactiveInit = () => {
     const container = new PIXI.Container();
     app.stage.addChild(container);
 
-    /****** */
-
-    // const nonActiveButton = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/non-active-button.png`));
-    // const activeButton = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/active-button.png`));
-
-    // const button1 = new PIXI.Container();
-    // button1.addChild(nonActiveButton);
-    // button1.addChild(activeButton);
-
-    // button1.interactive = true;
-    // button1.buttonMode = true;
-
-    // nonActiveButton.position.set(400, BUTTON_POSITION_Y);
-    // activeButton.position.set(400, BUTTON_POSITION_Y);
-
-    // activeButton.visible = false;
-
-    // button1.on('pointerdown', () => {
-    //     nonActiveButton.visible = !nonActiveButton.visible;
-    //     activeButton.visible = !activeButton.visible;
-    // });
-
-    // app.stage.addChild(button1);
-
-    /****** */
-
     const stairsButtons = [
-        new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/stairs-1.png`)),
-        new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/stairs-2.png`)),
-        new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/stairs-3.png`)),
+        createStairsButton('stairs-1.png'),
+        createStairsButton('stairs-2.png'),
+        createStairsButton('stairs-3.png'),
     ];
 
     const okButton = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/ok-button.png`));
@@ -71,8 +48,6 @@ export const interactiveInit = () => {
      * @param {object} stairsButton
      */
     const setOkButtonPosition = (stairsButton) => {
-        console.log(typeof stairsButton);
-
         const { x, y, width, height } = stairsButton;
 
         okButton.alpha = 0;
@@ -83,18 +58,22 @@ export const interactiveInit = () => {
 
     /**
      *
-     * @param {*} button
+     * @param {*} stairsButton
      * @param {*} index
      */
-    const clickStairsButtonHandler = (button, index) => {
+    const clickStairsButtonHandler = (stairsButton, index) => {
         if (selectedIndex === index) return;
         selectedIndex = index;
+
+        stairsButtons.forEach(resetActive);
+        setActive(stairsButton);
 
         allStairs.forEach((stairs) => stairs.visible = false);
         oldStairs.visible = false;
 
+        initOkButton();
         setStairsDefault(index);
-        setOkButtonPosition(button);
+        setOkButtonPosition(stairsButton);
     };
 
     const clickOkButtonHandler = () => {
@@ -113,7 +92,6 @@ export const interactiveInit = () => {
             if (isStairsButtonInit) return;
 
             stairsButtons.forEach(initStairsButton);
-            initOkButton();
 
             isStairsButtonInit = true;
         });
@@ -130,14 +108,16 @@ export const interactiveInit = () => {
      * @param {*} index
      */
     const initStairsButton = (button, index) => {
-        button.interactive = true;
-        button.buttonMode = true;
         button.position.set(buttonX, BUTTON_POSITION_Y);
 
+        timeoutDelay += 100;
         buttonX += BUTTON_OFFSET;
-        container.addChild(button);
-
         button.on('pointerdown', () => clickStairsButtonHandler(button, index));
+
+        setTimeout(() => {
+            button.alpha = 0;
+            container.addChild(button);
+        }, timeoutDelay);
     };
 
     /**
