@@ -1,0 +1,14 @@
+node_modules
+.idea
+.vscode
+.DS_Store
+
+*.zip
+*.rar
+*.7z
+*.gzip
+*.bzip2
+*.SIT
+*.tar
+*.gz
+*.tgz
