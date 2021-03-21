@@ -12,9 +12,12 @@ import { interactiveInit } from './scripts/modules/interactive.js';
 import { finalStageInit } from './scripts/modules/final-stage.js';
 import { logoInit } from './scripts/modules/logo.js';
 
-export const app = new PIXI.Application(APP_SETIINGS);
-document.getElementById('game').appendChild(app.view);
+import { fadeOut } from './scripts/services/animations.js';
 
+export const app = new PIXI.Application(APP_SETIINGS);
+app.stage.alpha = 0;
+
+document.getElementById('game').appendChild(app.view);
 
 const bg = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}bg.jpg`));
 app.stage.addChild(bg);
@@ -26,3 +29,7 @@ foregroundDecorInit();
 interactiveInit();
 finalStageInit();
 logoInit();
+
+setTimeout(() => {
+    fadeOut(app.stage);
+}, 300);

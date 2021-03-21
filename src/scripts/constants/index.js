@@ -1,9 +1,18 @@
+export const APP_WIDTH = 1390;
+export const APP_HEIGHT = 640;
+
+export const STAIRS_POSITION_X = 900;
+export const STAIRS_POSITION_Y = 25;
+
+export const FOREGROUND_PLANT_X = 1130;
+export const FOREGROUND_PLANT_Y = 445;
+
 export const APP_SETIINGS = {
-    width: 1390,
-    height: 640,
+    width: APP_WIDTH,
+    height: APP_HEIGHT,
     antialias: true,
     resolution: window.devicePixelRatio || 1,
-    backgroundColor: 0xa6653c,
+    backgroundColor: 0x000000,
 }
 
 export const RES_PATH = './dist/res/';

@@ -1,15 +1,15 @@
 import * as PIXI from 'pixi.js';
 import { app } from '../../main.js';
-import { RES_PATH } from '../constants/index.js';
+import { RES_PATH, STAIRS_POSITION_X, STAIRS_POSITION_Y } from '../constants/index.js';
+import { fadeOut, fallingDown } from '../services/animations.js';
 
-const stairs1 = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/stairs-1.png`));
-const stairs2 = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/stairs-2.png`));
-const stairs3 = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/stairs-3.png`));
+export const allStairs = [
+    new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/stairs-1.png`)),
+    new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/stairs-2.png`)),
+    new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/stairs-3.png`)),
+];
 
 export const oldStairs = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/old-stairs.png`));
-export const allStairs = [stairs1, stairs2, stairs3];
-export const STAIRS_FINAL_POSITION_X = 900;
-export const STAIRS_FINAL_POSITION_Y = 25;
 
 export const stairsInit = () => {
     const container = new PIXI.Container();
@@ -20,27 +20,16 @@ export const stairsInit = () => {
 
     /**
      *
-     * @param {*} stair
+     * @param {*} stairs
      */
-    const initStairs = (stair) => {
-        stair.position.set(STAIRS_FINAL_POSITION_X, STAIRS_FINAL_POSITION_Y);
-        stair.visible = false;
-        container.addChild(stair);
-    }
+    const initStairs = (stairs) => {
+        stairs.position.set(STAIRS_POSITION_X, STAIRS_POSITION_Y);
+        stairs.visible = false;
+        container.addChild(stairs);
 
-    const animationDropStairs = (stairs) => {
-        // "Падение" лестницы
-        if (stairs.y < STAIRS_FINAL_POSITION_Y) {
-            stairs.y += 5;
-        }
-
-        // Выход из прозрачного
-        if (stairs.alpha < 1) {
-            stairs.alpha += 0.1;
-        }
+        fadeOut(stairs);
+        fallingDown(stairs, STAIRS_POSITION_Y)
     }
 
     allStairs.forEach(initStairs);
-
-    app.ticker.add(() => allStairs.forEach(animationDropStairs));
 };

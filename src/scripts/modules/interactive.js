@@ -1,26 +1,56 @@
 import * as PIXI from 'pixi.js';
 import { app } from '../../main.js';
-import { RES_PATH } from '../constants/index.js';
-
-import { allStairs, oldStairs, STAIRS_FINAL_POSITION_Y } from './stairs.js';
+import { RES_PATH, STAIRS_POSITION_Y } from '../constants/index.js';
+import { allStairs, oldStairs } from './stairs.js';
 import { getContainer } from './final-stage.js';
+import { animationSwing, fadeOut } from '../services/animations.js';
 
 const STAIRS_FALL_OFFSET = 30;
 
 const BUTTON_POSITION_Y = 15;
 const BUTTON_OFFSET = 130;
+
 let buttonX = 830;
+let isStairsButtonInit = false;
 
 export const interactiveInit = () => {
     const container = new PIXI.Container();
     app.stage.addChild(container);
 
-    const button1 = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/stairs-1.png`));
-    const button2 = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/stairs-2.png`));
-    const button3 = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/stairs-3.png`));
-    const stairsButtons = [button1, button2, button3];
+    /****** */
+
+    // const nonActiveButton = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/non-active-button.png`));
+    // const activeButton = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/active-button.png`));
+
+    // const button1 = new PIXI.Container();
+    // button1.addChild(nonActiveButton);
+    // button1.addChild(activeButton);
+
+    // button1.interactive = true;
+    // button1.buttonMode = true;
+
+    // nonActiveButton.position.set(400, BUTTON_POSITION_Y);
+    // activeButton.position.set(400, BUTTON_POSITION_Y);
+
+    // activeButton.visible = false;
+
+    // button1.on('pointerdown', () => {
+    //     nonActiveButton.visible = !nonActiveButton.visible;
+    //     activeButton.visible = !activeButton.visible;
+    // });
+
+    // app.stage.addChild(button1);
+
+    /****** */
+
+    const stairsButtons = [
+        new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/stairs-1.png`)),
+        new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/stairs-2.png`)),
+        new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/stairs-3.png`)),
+    ];
 
     const okButton = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/ok-button.png`));
+    const hammerIcon = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/hammer.png`));
 
     let selectedIndex = null;
 
@@ -31,7 +61,7 @@ export const interactiveInit = () => {
     const setStairsDefault = (index) => {
         const activeStairs = allStairs[index];
 
-        activeStairs.y = STAIRS_FINAL_POSITION_Y - STAIRS_FALL_OFFSET;
+        activeStairs.y = STAIRS_POSITION_Y - STAIRS_FALL_OFFSET;
         activeStairs.alpha = 0;
         activeStairs.visible = true;
     }
@@ -40,7 +70,7 @@ export const interactiveInit = () => {
      *
      * @param {object} stairsButton
      */
-    const moveOkButton = (stairsButton) => {
+    const setOkButtonPosition = (stairsButton) => {
         console.log(typeof stairsButton);
 
         const { x, y, width, height } = stairsButton;
@@ -64,7 +94,7 @@ export const interactiveInit = () => {
         oldStairs.visible = false;
 
         setStairsDefault(index);
-        moveOkButton(button);
+        setOkButtonPosition(button);
     };
 
     const clickOkButtonHandler = () => {
@@ -73,18 +103,33 @@ export const interactiveInit = () => {
         finalStage.alpha = 0;
     };
 
-    const animationOkButton = () => {
-        if (okButton.alpha < 1) {
-            okButton.alpha += 0.1;
-        }
-    }
+    const hammerIconInit = () => {
+        hammerIcon.interactive = true;
+        hammerIcon.buttonMode = true;
+        hammerIcon.position.set(1090, 265);
+        hammerIcon.alpha = 0;
+
+        hammerIcon.on('pointerdown', () => {
+            if (isStairsButtonInit) return;
+
+            stairsButtons.forEach(initStairsButton);
+            initOkButton();
+
+            isStairsButtonInit = true;
+        });
+
+        animationSwing(hammerIcon, 0.7, 0.1);
+        fadeOut(hammerIcon);
+
+        container.addChild(hammerIcon);
+    };
 
     /**
      *
      * @param {*} button
      * @param {*} index
      */
-    const initButton = (button, index) => {
+    const initStairsButton = (button, index) => {
         button.interactive = true;
         button.buttonMode = true;
         button.position.set(buttonX, BUTTON_POSITION_Y);
@@ -104,12 +149,12 @@ export const interactiveInit = () => {
         okButton.buttonMode = true;
 
         okButton.on('pointerdown', () => clickOkButtonHandler());
+        fadeOut(okButton);
 
         container.addChild(okButton);
     };
 
-    stairsButtons.forEach(initButton);
-    initOkButton();
-
-    app.ticker.add(animationOkButton);
+    setTimeout(() => {
+        hammerIconInit();
+    }, 2000);
 }

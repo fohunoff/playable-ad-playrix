@@ -2,9 +2,9 @@ import * as PIXI from 'pixi.js';
 import { Graphics } from 'pixi.js';
 
 import { app } from '../../main.js';
-import { RES_PATH } from '../constants/index.js';
+import { RES_PATH, APP_WIDTH, APP_HEIGHT } from '../constants/index.js';
 
-import { animationSwing } from '../services/animations.js';
+import { animationSwing, fadeOut } from '../services/animations.js';
 
 let container;
 
@@ -17,15 +17,15 @@ export const finalStageInit = () => {
     const createOverlay = () => {
         const overlay = new Graphics();
         overlay.beginFill(0x000000);
-        overlay.drawRect(0, 0, 1390, 640);
-        overlay.alpha = 0.5;
+        overlay.drawRect(0, 0, APP_WIDTH, APP_HEIGHT);
+        overlay.alpha = 0.4;
         overlay.endFill();
         container.addChild(overlay);
     }
 
     const createBanner = () => {
         const banner = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/banner.png`));
-        banner.x = 1390 / 2;
+        banner.x = APP_WIDTH / 2;
         banner.y = 50;
         banner.anchor.set(0.5, 0);
 
@@ -34,7 +34,7 @@ export const finalStageInit = () => {
 
     const createContinueButton = () => {
         const continueButton = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/continue-button.png`));
-        continueButton.x = 1390 / 2;
+        continueButton.x = APP_WIDTH / 2;
         continueButton.y = 480;
         continueButton.anchor.set(0.5, 0);
 
@@ -55,11 +55,7 @@ export const finalStageInit = () => {
     createBanner();
     createContinueButton();
 
-    app.ticker.add(() => {
-        if (container.alpha < 1) {
-            container.alpha += 0.1;
-        }
-    });
+    fadeOut(container);
 };
 
 export const getContainer = () => container;
