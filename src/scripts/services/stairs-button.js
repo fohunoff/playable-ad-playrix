@@ -1,9 +1,9 @@
-import * as PIXI from 'pixi.js';
+import { Container } from '@pixi/display';
 import { createSprite } from '../helpers/sprite';
 import { fadeOut } from './animations.js';
 
 export const createStairsButton = (image) => {
-    const button = new PIXI.Container();
+    const button = new Container();
     const nonActiveButton = createSprite('interactive/non-active-button.png', 'normal');
     const activeButton = createSprite('interactive/active-button.png', 'active');
     const stairsTexture = createSprite(`interactive/${image}`, 'stairs');

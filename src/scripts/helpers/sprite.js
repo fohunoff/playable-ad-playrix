@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import {RES_PATH} from '../constants';
+import { RES_PATH } from '../constants';
 
 class Sprite extends PIXI.Sprite {
     constructor(texture, identifier) {

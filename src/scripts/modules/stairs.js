@@ -1,5 +1,4 @@
-import * as PIXI from 'pixi.js';
-import { app } from '../../main.js';
+import { Container } from '@pixi/display';
 import { createSprite } from '../helpers/sprite';
 import { STAIRS_POSITION_X, STAIRS_POSITION_Y } from '../constants';
 import { fadeOut, fallingDown } from '../services/animations.js';
@@ -13,15 +12,14 @@ export const allStairs = [
 export const oldStairs = createSprite('stairs/old-stairs.png');
 
 export const stairsInit = () => {
-    const container = new PIXI.Container();
-    app.stage.addChild(container);
+    const container = new Container();
 
     oldStairs.position.set(840, 55);
     container.addChild(oldStairs);
 
     /**
-     *
-     * @param {*} stairs
+     * Инициализация декора лестниц
+     * @param {object} stairs
      */
     const initStairs = (stairs) => {
         stairs.position.set(STAIRS_POSITION_X, STAIRS_POSITION_Y);
@@ -33,4 +31,6 @@ export const stairsInit = () => {
     }
 
     allStairs.forEach(initStairs);
+
+    return container;
 };

@@ -1,25 +1,23 @@
-import * as PIXI from 'pixi.js';
-import { app } from '../../main.js';
+import { Container } from '@pixi/display';
 import { createSprite } from '../helpers/sprite';
 import { getContainer } from './final-stage.js';
 import { createStairsButton, resetActive, setActive } from '../services/stairs-button.js';
 import { animationSwing, fadeOut } from '../services/animations.js';
 
 import { allStairs, oldStairs } from './stairs.js';
-import { STAIRS_POSITION_Y } from '../constants';
-
-const STAIRS_FALL_OFFSET = 30;
-
-const BUTTON_POSITION_Y = 15;
-const BUTTON_OFFSET = 130;
+import {
+    STAIRS_POSITION_Y,
+    STAIRS_FALL_OFFSET,
+    STAIRS_BUTTON_POSITION_Y,
+    STAIRS_BUTTON_OFFSET,
+} from '../constants';
 
 let buttonX = 830;
 let isStairsButtonInit = false;
 let timeoutDelay = 0;
 
 export const interactiveInit = () => {
-    const container = new PIXI.Container();
-    app.stage.addChild(container);
+    const container = new Container();
 
     const stairsButtons = [
         createStairsButton('stairs-1.png'),
@@ -33,8 +31,8 @@ export const interactiveInit = () => {
     let selectedIndex = null;
 
     /**
-     *
-     * @param {*} index
+     * Устанавливает стартовую точку лестницы
+     * @param {number} index - индекс активного элемента
      */
     const setStairsDefault = (index) => {
         const activeStairs = allStairs[index];
@@ -45,8 +43,8 @@ export const interactiveInit = () => {
     }
 
     /**
-     *
-     * @param {object} stairsButton
+     * Устанавливает позицию кнопки ОК при переключении иконок лестниц
+     * @param {object} stairsButton - контейнер кнопки-лестницы
      */
     const setOkButtonPosition = (stairsButton) => {
         const { x, y, width, height } = stairsButton;
@@ -58,9 +56,11 @@ export const interactiveInit = () => {
     };
 
     /**
-     *
-     * @param {*} stairsButton
-     * @param {*} index
+     * Обработчик "клика" по лестнице
+     * Инициализирует кнопку ОК
+     * Устанавливает стартовые значения кнопки ОК и декор-лестинцы
+     * @param {object} stairsButton - контейнер кнопки-лестницы
+     * @param {number} index - индекс активной кнопки
      */
     const clickStairsButtonHandler = (stairsButton, index) => {
         if (selectedIndex === index) return;
@@ -77,12 +77,20 @@ export const interactiveInit = () => {
         setOkButtonPosition(stairsButton);
     };
 
+    /**
+     * Обрабочик клика кнопки ОК
+     * Запускает финальную сцену
+     */
     const clickOkButtonHandler = () => {
         const finalStage = getContainer();
         finalStage.visible = true;
         finalStage.alpha = 0;
     };
 
+    /**
+     * Инициализация иконки молотка
+     * По клику запускает инициализацию кнопок-иконок лестниц
+     */
     const hammerIconInit = () => {
         hammerIcon.interactive = true;
         hammerIcon.buttonMode = true;
@@ -91,9 +99,7 @@ export const interactiveInit = () => {
 
         hammerIcon.on('pointerdown', () => {
             if (isStairsButtonInit) return;
-
             stairsButtons.forEach(initStairsButton);
-
             isStairsButtonInit = true;
         });
 
@@ -104,15 +110,15 @@ export const interactiveInit = () => {
     };
 
     /**
-     *
-     * @param {*} button
-     * @param {*} index
+     * Инициализация кнопки-иконки лестницы
+     * @param {object} button - сама кнопка-иконка
+     * @param {number} index - индекс кнопки в массиве для отображения декора-лестницы
      */
     const initStairsButton = (button, index) => {
-        button.position.set(buttonX, BUTTON_POSITION_Y);
+        button.position.set(buttonX, STAIRS_BUTTON_POSITION_Y);
 
         timeoutDelay += 100;
-        buttonX += BUTTON_OFFSET;
+        buttonX += STAIRS_BUTTON_OFFSET;
         button.on('pointerdown', () => clickStairsButtonHandler(button, index));
 
         setTimeout(() => {
@@ -122,7 +128,7 @@ export const interactiveInit = () => {
     };
 
     /**
-     *
+     * Инициализация кнопки ОК
      */
     const initOkButton = () => {
         okButton.visible = false;
@@ -138,4 +144,6 @@ export const interactiveInit = () => {
     setTimeout(() => {
         hammerIconInit();
     }, 2000);
+
+    return container;
 }

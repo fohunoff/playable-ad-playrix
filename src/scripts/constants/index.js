@@ -9,6 +9,10 @@ export const LOGO_POSITION_Y = 10;
 
 export const STAIRS_POSITION_X = 900;
 export const STAIRS_POSITION_Y = 25;
+export const STAIRS_FALL_OFFSET = 30;
+
+export const STAIRS_BUTTON_POSITION_Y = 15;
+export const STAIRS_BUTTON_OFFSET = 130;
 
 export const FOREGROUND_PLANT_X = 1130;
 export const FOREGROUND_PLANT_Y = 445;

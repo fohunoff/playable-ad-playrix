@@ -1,8 +1,5 @@
-// import { app } from './modules/app.js';
-// document.body.appendChild(app.view);
-
 import * as PIXI from 'pixi.js';
-import { APP_SETIINGS, RES_PATH } from './scripts/constants/index.js';
+import { APP_SETIINGS, RES_PATH } from './scripts/constants';
 
 import { austinInit } from './scripts/modules/austin.js';
 import { decorationsInit } from './scripts/modules/decorations.js';
@@ -12,24 +9,21 @@ import { interactiveInit } from './scripts/modules/interactive.js';
 import { finalStageInit } from './scripts/modules/final-stage.js';
 import { logoInit } from './scripts/modules/logo.js';
 
+import { createSprite } from './scripts/helpers/sprite.js';
 import { fadeOut } from './scripts/services/animations.js';
 
 export const app = new PIXI.Application(APP_SETIINGS);
 app.stage.alpha = 0;
 
 document.getElementById('game').appendChild(app.view);
+app.stage.addChild(createSprite('bg.jpg'));
 
-const bg = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}bg.jpg`));
-app.stage.addChild(bg);
+app.stage.addChild(austinInit());
+app.stage.addChild(decorationsInit());
+app.stage.addChild(stairsInit());
+app.stage.addChild(foregroundDecorInit());
+app.stage.addChild(interactiveInit());
+app.stage.addChild(finalStageInit());
+app.stage.addChild(logoInit());
 
-austinInit();
-decorationsInit();
-stairsInit();
-foregroundDecorInit();
-interactiveInit();
-finalStageInit();
-logoInit();
-
-setTimeout(() => {
-    fadeOut(app.stage);
-}, 300);
+setTimeout(() => fadeOut(app.stage), 300);

@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
-import { app } from '../../main.js';
+import { Container } from '@pixi/display';
+import { Graphics } from '@pixi/graphics';
 import { createSprite } from '../helpers/sprite';
 import { animationSwing, fadeOut } from '../services/animations.js';
 import {
@@ -13,13 +13,12 @@ import {
 let container;
 
 export const finalStageInit = () => {
-    container = new PIXI.Container();
+    container = new Container();
     container.interactive = true;
     container.visible = false;
-    app.stage.addChild(container);
 
     const createOverlay = () => {
-        const overlay = new PIXI.Graphics();
+        const overlay = new Graphics();
         overlay.beginFill(0x000000);
         overlay.drawRect(0, 0, APP_WIDTH, APP_HEIGHT);
         overlay.alpha = 0.4;
@@ -61,6 +60,8 @@ export const finalStageInit = () => {
     createContinueButton();
 
     fadeOut(container);
+
+    return container;
 };
 
 export const getContainer = () => container;

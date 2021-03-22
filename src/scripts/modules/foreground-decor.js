@@ -1,5 +1,4 @@
-import * as PIXI from 'pixi.js';
-import { app } from '../../main.js';
+import { Container } from '@pixi/display';
 import { createSprite } from '../helpers/sprite';
 import { fadeOut, fallingDown } from '../services/animations.js';
 import { FOREGROUND_PLANT_X, FOREGROUND_PLANT_Y } from '../constants';
@@ -7,8 +6,7 @@ import { FOREGROUND_PLANT_X, FOREGROUND_PLANT_Y } from '../constants';
 const TIMEOUT = 500;
 
 export const foregroundDecorInit = () => {
-    const container = new PIXI.Container();
-    app.stage.addChild(container);
+    const container = new Container();
 
     const plantForeground = createSprite('decoration/plant-foreground.png');
     plantForeground.position.set(FOREGROUND_PLANT_X, FOREGROUND_PLANT_Y - 50);
@@ -20,4 +18,6 @@ export const foregroundDecorInit = () => {
     }, TIMEOUT);
 
     container.addChild(plantForeground);
+
+    return container;
 }

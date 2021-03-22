@@ -1,5 +1,4 @@
-import * as PIXI from 'pixi.js';
-import { app } from '../../main.js';
+import { Container } from '@pixi/display';
 import { createSprite } from '../helpers/sprite';
 import { fadeOut, fallingDown } from '../services/animations.js';
 
@@ -15,8 +14,7 @@ const DECORS = {
 let TIMEOUT = 300;
 
 export const decorationsInit = () => {
-    const decorContainer = new PIXI.Container();
-    app.stage.addChild(decorContainer);
+    const decorContainer = new Container();
 
     // Сортируем по Y, чтобы не перекрывались предметы по экспозиции
     Object.values(DECORS).sort((a, b) => a.y - b.y).forEach((item) => {
@@ -33,4 +31,6 @@ export const decorationsInit = () => {
 
         decorContainer.addChild(decor);
     });
+
+    return decorContainer;
 };
