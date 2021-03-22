@@ -1,9 +1,9 @@
-import * as PIXI from 'pixi.js';
 import { app } from '../../main.js';
-import { RES_PATH, AUSTIN_POSITION_X, AUSTIN_POSITION_Y } from '../constants/index.js';
+import { createSprite } from '../helpers/sprite';
+import { AUSTIN_POSITION_X, AUSTIN_POSITION_Y } from '../constants';
 
 export const austinInit = () => {
-    const austin = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}austin.png`));
+    const austin = createSprite('austin.png');
     austin.position.set(AUSTIN_POSITION_X, AUSTIN_POSITION_Y);
 
     app.stage.addChild(austin);

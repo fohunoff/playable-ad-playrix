@@ -1,21 +1,12 @@
 import * as PIXI from 'pixi.js';
-import { RES_PATH } from '../constants/index.js';
+import { createSprite } from '../helpers/sprite';
 import { fadeOut } from './animations.js';
-
-const BUTTON_POSITION_Y = 15;
-
-class MyIDSprite extends PIXI.Sprite {
-    constructor(texture, identifier) {
-        super(texture);
-        this._identifier = identifier;
-    }
-}
 
 export const createStairsButton = (image) => {
     const button = new PIXI.Container();
-    const nonActiveButton = new MyIDSprite(PIXI.Texture.from(`${RES_PATH}interactive/non-active-button.png`), 'normal');
-    const activeButton = new MyIDSprite(PIXI.Texture.from(`${RES_PATH}interactive/active-button.png`), 'active');
-    const stairsTexture = new MyIDSprite(PIXI.Texture.from(`${RES_PATH}interactive/${image}`), 'stairs');
+    const nonActiveButton = createSprite('interactive/non-active-button.png', 'normal');
+    const activeButton = createSprite('interactive/active-button.png', 'active');
+    const stairsTexture = createSprite(`interactive/${image}`, 'stairs');
 
     button.addChild(nonActiveButton);
     button.addChild(activeButton);

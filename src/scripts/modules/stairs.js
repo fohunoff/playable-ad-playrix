@@ -1,15 +1,16 @@
 import * as PIXI from 'pixi.js';
 import { app } from '../../main.js';
-import { RES_PATH, STAIRS_POSITION_X, STAIRS_POSITION_Y } from '../constants/index.js';
+import { createSprite } from '../helpers/sprite';
+import { STAIRS_POSITION_X, STAIRS_POSITION_Y } from '../constants';
 import { fadeOut, fallingDown } from '../services/animations.js';
 
 export const allStairs = [
-    new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/stairs-1.png`)),
-    new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/stairs-2.png`)),
-    new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/stairs-3.png`)),
+    createSprite('stairs/stairs-1.png'),
+    createSprite('stairs/stairs-2.png'),
+    createSprite('stairs/stairs-3.png'),
 ];
 
-export const oldStairs = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}stairs/old-stairs.png`));
+export const oldStairs = createSprite('stairs/old-stairs.png');
 
 export const stairsInit = () => {
     const container = new PIXI.Container();

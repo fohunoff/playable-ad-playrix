@@ -1,11 +1,12 @@
 import * as PIXI from 'pixi.js';
 import { app } from '../../main.js';
-import { animationSwing, fadeOut } from '../services/animations.js';
-import { allStairs, oldStairs } from './stairs.js';
+import { createSprite } from '../helpers/sprite';
 import { getContainer } from './final-stage.js';
 import { createStairsButton, resetActive, setActive } from '../services/stairs-button.js';
+import { animationSwing, fadeOut } from '../services/animations.js';
 
-import { RES_PATH, STAIRS_POSITION_Y } from '../constants/index.js';
+import { allStairs, oldStairs } from './stairs.js';
+import { STAIRS_POSITION_Y } from '../constants';
 
 const STAIRS_FALL_OFFSET = 30;
 
@@ -26,8 +27,8 @@ export const interactiveInit = () => {
         createStairsButton('stairs-3.png'),
     ];
 
-    const okButton = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/ok-button.png`));
-    const hammerIcon = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/hammer.png`));
+    const okButton = createSprite('interactive/ok-button.png');
+    const hammerIcon = createSprite('interactive/hammer.png');
 
     let selectedIndex = null;
 

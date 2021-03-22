@@ -1,15 +1,14 @@
 import * as PIXI from 'pixi.js';
-import { Graphics } from 'pixi.js';
 import { app } from '../../main.js';
+import { createSprite } from '../helpers/sprite';
 import { animationSwing, fadeOut } from '../services/animations.js';
 import {
-    RES_PATH,
     APP_WIDTH,
     APP_HEIGHT,
     REDIRECT_URL,
     BANNER_POSITION_Y,
     CONTINUE_BUTTON_POSITION_Y,
-} from '../constants/index.js';
+} from '../constants';
 
 let container;
 
@@ -20,7 +19,7 @@ export const finalStageInit = () => {
     app.stage.addChild(container);
 
     const createOverlay = () => {
-        const overlay = new Graphics();
+        const overlay = new PIXI.Graphics();
         overlay.beginFill(0x000000);
         overlay.drawRect(0, 0, APP_WIDTH, APP_HEIGHT);
         overlay.alpha = 0.4;
@@ -29,7 +28,7 @@ export const finalStageInit = () => {
     }
 
     const createBanner = () => {
-        const banner = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/banner.png`));
+        const banner = createSprite('interactive/banner.png');
         banner.x = APP_WIDTH / 2;
         banner.y = BANNER_POSITION_Y;
         banner.anchor.set(0.5, 0);
@@ -38,7 +37,7 @@ export const finalStageInit = () => {
     };
 
     const createContinueButton = () => {
-        const continueButton = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}interactive/continue-button.png`));
+        const continueButton = createSprite('interactive/continue-button.png');
         continueButton.x = APP_WIDTH / 2;
         continueButton.y = CONTINUE_BUTTON_POSITION_Y;
         continueButton.anchor.set(0.5, 0);

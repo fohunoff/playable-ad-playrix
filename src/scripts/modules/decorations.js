@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { app } from '../../main.js';
+import { createSprite } from '../helpers/sprite';
 import { fadeOut, fallingDown } from '../services/animations.js';
-import { RES_PATH } from '../constants/index.js';
 
 const DECORS = {
     bookStand:  { x: 830,   y: -20, name: 'book-stand.png', },
@@ -20,7 +20,7 @@ export const decorationsInit = () => {
 
     // Сортируем по Y, чтобы не перекрывались предметы по экспозиции
     Object.values(DECORS).sort((a, b) => a.y - b.y).forEach((item) => {
-        const decor = new PIXI.Sprite(PIXI.Texture.from(`${RES_PATH}decoration/${item.name}`));
+        const decor = createSprite(`decoration/${item.name}`);
         decor.position.set(item.x, item.y - 50);
         decor.alpha = 0;
 
